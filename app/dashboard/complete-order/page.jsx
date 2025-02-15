@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState, Suspense } from "react";
 import { UserDetailContext } from "../../_context/UserDetailContext";
 
-const CompleteOrder = () => {
+const CompleteOrderContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { user } = useUser();
@@ -44,39 +44,44 @@ const CompleteOrder = () => {
         <h1 className="text-4xl">Loading</h1>
       </div>
     );
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
-          <svg
-            className="mx-auto mb-4 w-16 h-16 text-gray-700"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12l2 2l4 -4m0 0a9 9 0 1 1 -8 4.9"
-            />
-          </svg>
-          <h2 className="text-2xl font-semibold mb-2">Payment Successful!</h2>
-          <p className="text-gray-600 mb-6">
-            Thank you for your purchase. Your transaction has been completed
-            successfully.
-          </p>
-          <button
-            onClick={() => (window.location.href = "/dashboard")}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary transition-colors"
-          >
-            Go to Dashboard
-          </button>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
+        <svg
+          className="mx-auto mb-4 w-16 h-16 text-gray-700"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 12l2 2l4 -4m0 0a9 9 0 1 1 -8 4.9"
+          />
+        </svg>
+        <h2 className="text-2xl font-semibold mb-2">Payment Successful!</h2>
+        <p className="text-gray-600 mb-6">
+          Thank you for your purchase. Your transaction has been completed
+          successfully.
+        </p>
+        <button
+          onClick={() => (window.location.href = "/dashboard")}
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary transition-colors"
+        >
+          Go to Dashboard
+        </button>
       </div>
-    </Suspense>
+    </div>
   );
 };
+
+const CompleteOrder = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <CompleteOrderContent />
+  </Suspense>
+);
 
 export default CompleteOrder;
