@@ -4,8 +4,10 @@ import getPaypalAccessToken from "../../../lib/getPaypalAccessToken";
 
 export async function POST(req) {
   const paypalUrl = process.env.PAYPAL_URL;
+  console.log("🚀 ~ POST ~ paypalUrl:", paypalUrl);
   try {
     const accessToken = await getPaypalAccessToken();
+    console.log("🚀 ~ POST ~ accessToken:", accessToken);
 
     const response = await axios({
       method: "post",
@@ -20,8 +22,8 @@ export async function POST(req) {
           {
             items: [
               {
-                name: "40 Credits",
-                description: "40 Credits for videos",
+                name: "50 Credits",
+                description: "50 Credits for videos",
                 quantity: 1,
                 unit_amount: {
                   currency_code: "USD",
@@ -51,6 +53,7 @@ export async function POST(req) {
     const acceptLink = response.data.links.find(
       (link) => link.rel === "approve"
     ).href;
+    console.log("🚀 ~ POST ~ acceptLink:", acceptLink);
 
     return NextResponse.json({ link: acceptLink });
   } catch (error) {

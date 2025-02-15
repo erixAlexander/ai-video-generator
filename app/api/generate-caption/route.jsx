@@ -8,10 +8,6 @@ export async function POST(req) {
 
   const { audioFileUrl } = await req.json();
 
-  // You can also transcribe a local file by passing in a file path
-  // const audioFileUrl = './path/to/file.mp3';
-
-  // Request parameters
   const data = {
     audio: audioFileUrl,
   };
