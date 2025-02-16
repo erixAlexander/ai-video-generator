@@ -27,7 +27,7 @@ function Header({ setHidden }) {
           alt="logo"
         />
 
-        <h2 className="font-bold text-lg md:text-xl">Ai Short Video</h2>
+        <h2 className="font-bold text-lg md:text-xl">Erix Ai Shorts!</h2>
       </div>
       <div className="flex gap-3 items-center">
         <div className="flex gap-1 items-center justify-center">
