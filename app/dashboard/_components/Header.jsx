@@ -7,7 +7,7 @@ function Header({ setHidden }) {
   const { userDetail } = useContext(UserDetailContext);
 
   return (
-    <div className="p-3 px-5 flex items-center justify-between shadow-md fixed w-full bg-white">
+    <div className="p-3 px-5 flex items-center justify-between shadow-md fixed w-full bg-white z-20">
       <div
         onClick={() => setHidden((prev) => !prev)}
         className="flex gap-3 items-center"
