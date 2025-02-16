@@ -8,7 +8,6 @@ import CustomLoading from "./dashboard/create-new/_components/CustomLoading";
 
 function Provider({ children }) {
   const { user, isLoaded } = useUser();
-  const [isUserVerified, setIsUserVerified] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +26,6 @@ function Provider({ children }) {
               imageUrl: user.imageUrl,
             });
           }
-          setIsUserVerified(true);
         } catch (error) {
           console.error("Error verifying user:", error);
         } finally {
@@ -50,10 +48,6 @@ function Provider({ children }) {
       </div>
     );
   }
-
-  // if (!isUserVerified) {
-  //   return <div>Error verifying user. Please try again later.</div>;
-  // }
 
   return <>{children}</>;
 }

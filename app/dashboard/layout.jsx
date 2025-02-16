@@ -11,26 +11,21 @@ import { eq } from "drizzle-orm";
 
 function DashboardLayout({ children }) {
   const [videoData, setVideoData] = useState([]);
-  const [userDetail, setUserDetail] = useState(null);
-  const [loading, setLoading] = useState(false);
   const { isLoaded, isSignedIn, user } = useUser();
   const [hidden, setHidden] = useState(true);
+  const [userDetail, setUserDetail] = useState({});
 
   const getUserDetail = useCallback(async () => {
-    console.log("🚀 ~ getUserDetail ~ user:", user);
     if (!user) return;
     try {
-      setLoading(true);
       const result = await db
         .select()
         .from(Users)
         .where(eq(Users.email, user.primaryEmailAddress.emailAddress));
-      console.log("🚀 ~ getUserDetail ~ result:", result[0]);
-      setUserDetail(result[0] || null);
+
+      setUserDetail(result[0]);
     } catch (error) {
       console.error("Error fetching user detail:", error);
-    } finally {
-      setLoading(false);
     }
   }, [user]);
 
@@ -55,10 +50,6 @@ function DashboardLayout({ children }) {
 
   if (!isSignedIn) {
     return <div>Please sign in to access the dashboard.</div>;
-  }
-
-  if (loading || !userDetail) {
-    return <div>Loading user details...</div>;
   }
 
   return (

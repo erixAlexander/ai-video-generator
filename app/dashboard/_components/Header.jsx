@@ -32,7 +32,7 @@ function Header({ setHidden }) {
       <div className="flex gap-3 items-center">
         <div className="flex gap-1 items-center justify-center">
           <Image src={"/star.png"} width={20} height={20} alt="star" />
-          <h2>{userDetail?.credits}</h2>
+          <h2>{userDetail?.credits || 30}</h2>
         </div>
 
         <UserButton />
