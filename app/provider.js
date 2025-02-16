@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { db } from "../configs/db";
 import { Users } from "../configs/schema";
 import { eq } from "drizzle-orm";
+import CustomLoading from "./dashboard/create-new/_components/CustomLoading";
 
 function Provider({ children }) {
   const { user, isLoaded } = useUser();
@@ -43,7 +44,11 @@ function Provider({ children }) {
   }, [user, isLoaded]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <CustomLoading loading={loading} />
+      </div>
+    );
   }
 
   // if (!isUserVerified) {

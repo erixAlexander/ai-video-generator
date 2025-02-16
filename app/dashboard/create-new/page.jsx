@@ -226,7 +226,12 @@ function CreateNew() {
           Create New Video
         </Button>
 
-        <CustomLoading loading={loading} />
+        <CustomLoading
+          loading={loading}
+          text={
+            "Genereting your video do not refresh. This may take a minute..."
+          }
+        />
 
         <PlayerDialog
           playVideo={playVideo}
