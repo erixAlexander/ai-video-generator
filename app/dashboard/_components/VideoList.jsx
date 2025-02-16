@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Thumbnail } from "@remotion/player";
 import RemotionVideo from "./RemotionVideo";
 import PlayerDialog from "./PlayerDialog";
 import useWindowWidth from "../hooks/useWindowWidth";
+import { useRouter } from "next/navigation";
 
 const VideoList = ({ videoList }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [videoId, setVideoid] = useState();
   const windowWidth = useWindowWidth();
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   return (
     <div className="mt-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-20">
