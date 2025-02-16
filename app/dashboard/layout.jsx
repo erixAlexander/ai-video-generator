@@ -14,6 +14,7 @@ function DashboardLayout({ children }) {
   const [userDetail, setUserDetail] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const [hidden, setHidden] = useState(true);
 
   const getUserDetail = useCallback(async () => {
     try {
@@ -51,12 +52,16 @@ function DashboardLayout({ children }) {
     <UserDetailContext.Provider value={userContextValue}>
       <VideoDataContext.Provider value={videoContextValue}>
         <div>
-          <div className="hidden md:block h-screen bg-white fixed mt-[65px] w-64">
+          <div
+            className={`${
+              hidden && "hidden"
+            } md:block h-screen bg-white fixed mt-[65px] w-64 z-10`}
+          >
             <SideNav />
           </div>
           <div>
-            <Header />
-            <main className="md:ml-64 p-10">
+            <Header setHidden={setHidden} />
+            <main onClick={() => setHidden(true)} className="md:ml-64 p-10">
               {loading ? <div>Loading...</div> : children}
             </main>
           </div>

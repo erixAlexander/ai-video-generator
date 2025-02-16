@@ -211,7 +211,7 @@ function CreateNew() {
   };
 
   return (
-    <div className="md:p-20">
+    <div className="md:p-20 mt-10 md:mt-0">
       <h2 className="font-bold text-4xl text-primary text-center">
         Create New
       </h2>
