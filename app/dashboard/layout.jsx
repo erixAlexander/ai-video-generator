@@ -13,32 +13,33 @@ function DashboardLayout({ children }) {
   const [videoData, setVideoData] = useState([]);
   const [userDetail, setUserDetail] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { user } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
   const [hidden, setHidden] = useState(true);
 
   const getUserDetail = useCallback(async () => {
+    console.log("🚀 ~ getUserDetail ~ user:", user);
+    if (!user) return;
     try {
       setLoading(true);
       const result = await db
         .select()
         .from(Users)
-        .where(eq(Users.email, user?.primaryEmailAddress?.emailAddress));
+        .where(eq(Users.email, user.primaryEmailAddress.emailAddress));
+      console.log("🚀 ~ getUserDetail ~ result:", result[0]);
       setUserDetail(result[0] || null);
     } catch (error) {
       console.error("Error fetching user detail:", error);
-      // Optionally, set an error state here
     } finally {
       setLoading(false);
     }
   }, [user]);
 
   useEffect(() => {
-    if (user) {
+    if (isLoaded && isSignedIn) {
       getUserDetail();
     }
-  }, [user, getUserDetail]);
+  }, [isLoaded, isSignedIn, getUserDetail]);
 
-  // Memoize the context values to prevent unnecessary re-renders
   const userContextValue = useMemo(
     () => ({ userDetail, setUserDetail }),
     [userDetail]
@@ -47,6 +48,18 @@ function DashboardLayout({ children }) {
     () => ({ videoData, setVideoData }),
     [videoData]
   );
+
+  if (!isLoaded) {
+    return <div>Loading authentication...</div>;
+  }
+
+  if (!isSignedIn) {
+    return <div>Please sign in to access the dashboard.</div>;
+  }
+
+  if (loading || !userDetail) {
+    return <div>Loading user details...</div>;
+  }
 
   return (
     <UserDetailContext.Provider value={userContextValue}>
@@ -62,7 +75,7 @@ function DashboardLayout({ children }) {
           <div>
             <Header setHidden={setHidden} />
             <main onClick={() => setHidden(true)} className="md:ml-64 p-10">
-              {loading ? <div>Loading...</div> : children}
+              {children}
             </main>
           </div>
         </div>

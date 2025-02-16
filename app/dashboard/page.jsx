@@ -28,7 +28,9 @@ function page() {
   return (
     <div className="mt-14 md:mt-10">
       <div className="flex items-center justify-between">
-        <h2 className="font-bold text-4xl text-primary">Dashboard</h2>
+        <h2 className="font-bold text-xl md:text-4xl text-primary">
+          Dashboard
+        </h2>
         <Link href={"/dashboard/create-new"}>
           <Button>Create New</Button>
         </Link>
