@@ -9,6 +9,8 @@ import CustomLoading from "./_components/CustomLoading";
 import { v4 as uuidv4 } from "uuid";
 import { VideoDataContext } from "../../_context/VideoDataContext";
 import { db } from "../../../configs/db";
+import { Users } from "../../../configs/schema";
+import { eq, sql } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import { VideoData as videoDataTable } from "../../../configs/schema";
 import PlayerDialog from "../../dashboard/_components/PlayerDialog";
@@ -153,8 +155,6 @@ function CreateNew() {
         return axios
           .post("/api/generate-image", {
             prompt: item?.imagePrompt,
-            substract: index == videoScript.length - 1,
-            userEmail: user?.primaryEmailAddress?.emailAddress,
             style: formData?.style,
           })
           .then((response) => response.data.result);
@@ -166,7 +166,7 @@ function CreateNew() {
         imageList: imagesUrlArray,
       }));
 
-      setUserDetail((prev) => ({ ...prev, credits: prev.credits - 10 }));
+      // setUserDetail((prev) => ({ ...prev, credits: prev.credits - 10 }));
     } catch (error) {
       console.error("Error generating images:", error);
     }
@@ -201,9 +201,17 @@ function CreateNew() {
         .returning({ id: videoDataTable?.id });
 
       setVideoId(result[0].id);
+
+      await db
+        .update(Users)
+        .set({ credits: sql`${Users.credits} - 10` })
+        .where(eq(Users.email, user?.primaryEmailAddress?.emailAddress));
+
+      setUserDetail((prev) => ({ ...prev, credits: prev.credits - 10 }));
       setPlayVideo(true);
     } catch (error) {
       console.error("Error inserting video data:", error);
+      alert("Error inserting video data. Please try again.");
     } finally {
       setVideoData({});
       setLoading(false);

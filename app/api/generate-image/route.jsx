@@ -3,14 +3,11 @@ import { NextResponse } from "next/server";
 import { storage } from "../../../configs/FirebaseConfig";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import axios from "axios";
-import { db } from "../../../configs/db";
-import { Users } from "../../../configs/schema";
-import { eq, sql } from "drizzle-orm";
 
 export async function POST(req) {
   try {
     const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
-    const { prompt, substract, userEmail, style } = await req.json();
+    const { prompt, style } = await req.json();
 
     const input = {
       prompt: `(${style} style) ${prompt}`,
@@ -36,14 +33,6 @@ export async function POST(req) {
     await uploadString(storageRef, base64Image, "data_url");
 
     const downloadUrl = await getDownloadURL(storageRef);
-
-    // Subtract 10 credits
-    if (substract) {
-      await db
-        .update(Users)
-        .set({ credits: sql`${Users.credits} - 10` })
-        .where(eq(Users.email, userEmail));
-    }
 
     return NextResponse.json({ result: downloadUrl });
   } catch (error) {
