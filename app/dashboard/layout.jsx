@@ -64,7 +64,7 @@ function DashboardLayout({ children }) {
             <SideNav />
           </div>
           <div>
-            <Header setHidden={setHidden} />
+            <Header setHidden={setHidden} userDetail={userDetail} />
             <main onClick={() => setHidden(true)} className="md:ml-64 p-10">
               {children}
             </main>

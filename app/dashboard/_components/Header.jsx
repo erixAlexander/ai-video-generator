@@ -1,11 +1,8 @@
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import React, { useContext } from "react";
-import { UserDetailContext } from "../../_context/UserDetailContext";
+import React from "react";
 
-function Header({ setHidden }) {
-  const { userDetail } = useContext(UserDetailContext);
-
+function Header({ setHidden, userDetail }) {
   return (
     <div className="p-3 px-5 flex items-center justify-between shadow-md fixed w-full bg-white z-20">
       <div
