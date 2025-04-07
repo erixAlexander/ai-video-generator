@@ -53,7 +53,7 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
         setPlayVideo(newOpen);
         setVideoData(null);
         // router.refresh();
-        // router.replace("/dashboard");
+        router.replace("/dashboard");
       }}
     >
       <DialogContent className="bg-white flex flex-col items-center">
@@ -81,7 +81,7 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
                   setPlayVideo(false);
                   setVideoData(null);
 
-                  // router.replace("/dashboard");
+                  router.replace("/dashboard");
                   // router.refresh();
                 }}
               >
