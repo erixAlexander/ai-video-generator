@@ -13,7 +13,7 @@ import { VideoData } from "../../../configs/schema";
 import { eq } from "drizzle-orm";
 import { useRouter } from "next/navigation";
 
-const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
+const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
   const [videoData, setVideoData] = useState({});
   const [loading, setLoading] = useState(false);
   const [durationInFrames, setDurationInFrames] = useState(100);
@@ -52,8 +52,9 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
         if (newOpen) return; // Do nothing if dialog is opening
         setPlayVideo(newOpen);
         setVideoData(null);
+        setVideoId(null);
         // router.refresh();
-        router.replace("/dashboard");
+        // router.replace("/dashboard");
       }}
     >
       <DialogContent className="bg-white flex flex-col items-center">
@@ -63,6 +64,7 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
           </DialogTitle>
           <div>
             <Player
+              acknowledgeRemotionLicense
               component={RemotionVideo}
               durationInFrames={Number(durationInFrames.toFixed(0)) + 60}
               compositionWidth={300}
@@ -80,8 +82,9 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
                 onClick={() => {
                   setPlayVideo(false);
                   setVideoData(null);
+                  setVideoId(null);
 
-                  router.replace("/dashboard");
+                  // router.replace("/dashboard");
                   // router.refresh();
                 }}
               >

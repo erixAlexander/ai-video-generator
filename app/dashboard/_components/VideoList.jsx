@@ -8,7 +8,7 @@ import useWindowWidth from "../hooks/useWindowWidth";
 
 const VideoList = ({ videoList }) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [videoId, setVideoid] = useState(null);
+  const [videoId, setVideoId] = useState(null);
   const windowWidth = useWindowWidth();
   // const router = useRouter();
 
@@ -25,7 +25,7 @@ const VideoList = ({ videoList }) => {
             key={index}
             onClick={() => {
               setOpenDialog(true);
-              setVideoid(video.id);
+              setVideoId(video.id);
             }}
           >
             <Thumbnail
@@ -49,6 +49,7 @@ const VideoList = ({ videoList }) => {
         videoId={videoId}
         playVideo={openDialog}
         setPlayVideo={setOpenDialog}
+        setVideoId={setVideoId}
       />
     </div>
   );

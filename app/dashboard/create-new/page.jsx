@@ -245,6 +245,7 @@ function CreateNew() {
           playVideo={playVideo}
           videoId={videoId}
           setPlayVideo={setPlayVideo}
+          setVideoId={setVideoId}
         />
       </div>
     </div>
