@@ -25,7 +25,7 @@ function CreateNew() {
   });
   const [loading, setLoading] = useState(false);
   const [playVideo, setPlayVideo] = useState(false);
-  const [videoId, setVideoId] = useState(null); // Initialize as null
+  const [videoId, setVideoId] = useState(null);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const { videoData, setVideoData } = useContext(VideoDataContext);
 
@@ -146,18 +146,23 @@ function CreateNew() {
         .values(videoDataToInsert)
         .returning({ id: videoDataTable?.id });
 
-      // Delay state updates to avoid render conflicts
-      setTimeout(() => {
-        setVideoId(result[0].id);
-        setPlayVideo(true);
-        setVideoData({}); // Reset after dialog opens
-        setUserDetail((prev) => ({ ...prev, credits: prev.credits - 10 }));
-      }, 100); // Small delay to let DB update settle
-
       await db
         .update(Users)
         .set({ credits: sql`${Users.credits} - 10` })
         .where(eq(Users.email, user?.primaryEmailAddress?.emailAddress));
+
+      // Update state with a delay to avoid render conflicts
+      setTimeout(() => {
+        setVideoId(result[0].id);
+        setPlayVideo(true);
+        setVideoData({});
+        setUserDetail((prev) => ({ ...prev, credits: prev.credits - 10 }));
+
+        // // Redirect to dashboard only if not already there
+        // if (pathname !== "/dashboard") {
+        //   router.push("/dashboard");
+        // }
+      }, 100);
     } catch (error) {
       console.error("Error saving video data:", error);
       alert("Error saving video data.");

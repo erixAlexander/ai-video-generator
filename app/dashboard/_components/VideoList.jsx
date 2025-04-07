@@ -4,17 +4,11 @@ import { Thumbnail } from "@remotion/player";
 import RemotionVideo from "./RemotionVideo";
 import PlayerDialog from "./PlayerDialog";
 import useWindowWidth from "../hooks/useWindowWidth";
-// import { useRouter } from "next/navigation";
 
 const VideoList = ({ videoList }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [videoId, setVideoId] = useState(null);
   const windowWidth = useWindowWidth();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   router.refresh();
-  // }, []);
 
   return (
     <div className="mt-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-20">

@@ -5,11 +5,15 @@ import RemotionVideo from "./RemotionVideo";
 import { db } from "../../../configs/db";
 import { VideoData } from "../../../configs/schema";
 import { eq } from "drizzle-orm";
+import { useRouter, usePathname } from "next/navigation";
 
 const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
   const [videoData, setVideoData] = useState({});
   const [loading, setLoading] = useState(false);
   const [durationInFrames, setDurationInFrames] = useState(100);
+
+  const router = useRouter(); // For navigation
+  const pathname = usePathname();
 
   useEffect(() => {
     if (videoId) {
@@ -90,9 +94,11 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
                 setTimeout(() => {
                   setVideoData({});
                   setVideoId(null);
-                }, 100); // Match delay in saveVideoData
+                  if (pathname !== "/dashboard") {
+                    router.push("/dashboard");
+                  }
+                }, 100);
               }}
-              style={{ marginTop: "20px" }}
             >
               Close
             </Button>
