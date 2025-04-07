@@ -51,6 +51,7 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
         console.log("🚀 ~ PlayerDialog ~ newOpen:", newOpen);
         if (newOpen) return; // Do nothing if dialog is opening
         setPlayVideo(newOpen);
+        setVideoData(null);
         // router.refresh();
         // router.replace("/dashboard");
       }}
@@ -78,6 +79,8 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
                 variant="ghost"
                 onClick={() => {
                   setPlayVideo(false);
+                  setVideoData(null);
+
                   // router.replace("/dashboard");
                   // router.refresh();
                 }}
