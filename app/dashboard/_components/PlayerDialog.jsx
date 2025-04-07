@@ -48,11 +48,11 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
     <Dialog
       open={playVideo}
       onOpenChange={(newOpen) => {
-        console.log("🚀 ~ PlayerDialog ~ newOpen:", newOpen)
+        console.log("🚀 ~ PlayerDialog ~ newOpen:", newOpen);
         if (newOpen) return; // Do nothing if dialog is opening
         setPlayVideo(newOpen);
         // router.refresh();
-        router.replace("/dashboard");
+        // router.replace("/dashboard");
       }}
     >
       <DialogContent className="bg-white flex flex-col items-center">
@@ -78,7 +78,7 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo }) => {
                 variant="ghost"
                 onClick={() => {
                   setPlayVideo(false);
-                  router.replace("/dashboard");
+                  // router.replace("/dashboard");
                   // router.refresh();
                 }}
               >

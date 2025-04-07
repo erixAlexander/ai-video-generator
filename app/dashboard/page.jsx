@@ -8,17 +8,10 @@ import { VideoData } from "../../configs/schema";
 import { eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import VideoList from "./_components/VideoList";
-import { useRouter } from "next/navigation";
 
 function page() {
   const [videoList, setVideoList] = useState(null);
   const { user } = useUser();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    router.refresh();
-  }, []);
 
   const getVideoList = async () => {
     const result = await db
