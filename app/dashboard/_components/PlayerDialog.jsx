@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "../../../components/ui/dialog";
+import { Button } from "../../../components/ui/button";
 import { Player } from "@remotion/player";
 import RemotionVideo from "./RemotionVideo";
-import { Button } from "../../../components/ui/button";
 import { db } from "../../../configs/db";
 import { VideoData } from "../../../configs/schema";
 import { eq } from "drizzle-orm";
-import { useRouter } from "next/navigation";
 
 const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
   const [videoData, setVideoData] = useState({});
   const [loading, setLoading] = useState(false);
   const [durationInFrames, setDurationInFrames] = useState(100);
-  const router = useRouter();
 
   useEffect(() => {
-    videoId && GetVideoData();
+    if (videoId) {
+      let isMounted = true;
+      GetVideoData().then(() => {
+        if (!isMounted) return;
+      });
+      return () => {
+        isMounted = false;
+      };
+    }
   }, [playVideo, videoId]);
 
   const GetVideoData = async () => {
@@ -30,39 +30,48 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
         .select()
         .from(VideoData)
         .where(eq(VideoData.id, videoId));
-      setVideoData(result[0]);
+      setVideoData(result[0] || {});
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching video data:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return null;
-
-  if (!videoData || Object.keys(videoData).length === 0) {
-    return null;
-  }
+  if (!playVideo) return null;
 
   return (
-    <Dialog
-      open={playVideo}
-      onOpenChange={(newOpen) => {
-        console.log("🚀 ~ PlayerDialog ~ newOpen:", newOpen);
-        if (newOpen) return; // Do nothing if dialog is opening
-        setPlayVideo(newOpen);
-        setVideoData(null);
-        setVideoId(null);
-        // router.refresh();
-        // router.replace("/dashboard");
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: "rgba(0,0,0,0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 1000,
       }}
     >
-      <DialogContent className="bg-white flex flex-col items-center">
-        <DialogHeader>
-          <DialogTitle className="font-bold my-5 text-3xl">
-            Your Video Is Ready
-          </DialogTitle>
-          <div>
+      <div
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "8px",
+          textAlign: "center",
+          maxWidth: "500px",
+          width: "100%",
+        }}
+      >
+        {loading ? (
+          <p>Loading...</p>
+        ) : videoData && Object.keys(videoData).length > 0 ? (
+          <>
+            <h2 style={{ fontSize: "1.5rem", margin: "0 0 20px" }}>
+              Your Video Is Ready
+            </h2>
             <Player
               acknowledgeRemotionLicense
               component={RemotionVideo}
@@ -70,31 +79,29 @@ const PlayerDialog = ({ playVideo, videoId, setPlayVideo, setVideoId }) => {
               compositionWidth={300}
               compositionHeight={450}
               fps={30}
-              inputProps={{
-                ...videoData,
-                setDurationInFrames: setDurationInFrames,
-              }}
+              inputProps={{ ...videoData, setDurationInFrames }}
               controls={true}
+              style={{ margin: "0 auto" }}
             />
-            <div className="flex items-center justify-center gap-10 mt-5">
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setPlayVideo(false);
-                  setVideoData(null);
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setPlayVideo(false);
+                setTimeout(() => {
+                  setVideoData({});
                   setVideoId(null);
-
-                  // router.replace("/dashboard");
-                  // router.refresh();
-                }}
-              >
-                Close
-              </Button>
-            </div>
-          </div>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+                }, 100); // Match delay in saveVideoData
+              }}
+              style={{ marginTop: "20px" }}
+            >
+              Close
+            </Button>
+          </>
+        ) : (
+          <p>No video data available.</p>
+        )}
+      </div>
+    </div>
   );
 };
 
